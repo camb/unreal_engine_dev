@@ -1,5 +1,6 @@
 #include "FBullCowGame.h"
 
+int32 FBullCowGame::getHiddenWordLength() const { return myHiddenWord.length(); }
 int32 FBullCowGame::getMaxTries() const { return myMaxTries; }
 int32 FBullCowGame::getCurrentTry() const { return myCurrentTry; }
 int32 FBullCowGame::getIsogramLen() const { return 0; }
@@ -11,13 +12,13 @@ FBullCowGame::FBullCowGame()
 
 void FBullCowGame::reset()
 {
-	constexpr int32 MAX_TRIES = 3;
-	myMaxTries = MAX_TRIES;
-
+	constexpr int32 MAX_TRIES = 8;
 	const FString HIDDEN_WORD = "earth";
-	myHiddenWord = HIDDEN_WORD;
 
+	myMaxTries = MAX_TRIES;
+	myHiddenWord = HIDDEN_WORD;
 	myCurrentTry = 1;
+
 	return;
 }
 
@@ -26,9 +27,9 @@ void FBullCowGame::isGameWon() const
 	return;
 }
 
-bool FBullCowGame::checkGuessValidity()
+EWordStatus FBullCowGame::checkGuessValidity() const
 {
-	return false;
+	return EWordStatus::ok;
 }
 
 FString FBullCowGame::getIsogram()
@@ -56,17 +57,20 @@ FBullCowCount FBullCowGame::submitGuess(FString guess)
 	for ( int32 i = 0; i < guessLength; i++ )
 	{
 		// compare letters against hidden word
-		for ( int32 j = 0; j < guessLength; j++ )
+		for ( int32 j = 0; j < hiddenWordLength; j++ )
 		{
-			// if they're in the same place increment bulls
-			if ( guess[i] == myHiddenWord[i] )
+			if ( guess[i] == myHiddenWord[j] )
 			{
-				bullCowCount.bulls++;
-			}
-			// if they're in different places increment cows
-			else if ( guess[i] == myHiddenWord[j] )
-			{
-				bullCowCount.cows++;
+				if ( i == j )
+				{
+					// if they're in the same place increment bulls
+					bullCowCount.bulls++;
+				}
+				else
+				{
+					// if they're in different places increment cows
+					bullCowCount.cows++;
+				}
 			}
 		}
 	}

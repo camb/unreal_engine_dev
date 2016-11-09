@@ -31,11 +31,10 @@ int main()
 
 
 void printIntro() {
-	constexpr int32 WORD_LEN = 5;
-
 	std::cout << "Welcome to Bulls and Cows!\n";
 	std::cout << "This is a simple word game.\n";
-	std::cout << "Can you guess the " << WORD_LEN << " letter isogram I'm thinking of?\n";
+	std::cout << "Can you guess the " << BCGame.getHiddenWordLength();
+	std::cout << " letter isogram I'm thinking of?\n";
 
 	return;
 }
@@ -77,7 +76,7 @@ FText getGuess() {
 bool playAgain()
 {
 	FText answer = "";
-	std::cout << "Do you want to play again? Y/N";
+	std::cout << "Do you want to play again? Y/N ";
 	std::getline(std::cin, answer);
 	return (answer[0] == 'Y' || answer[0] == 'y');
 }
