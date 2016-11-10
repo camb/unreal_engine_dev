@@ -1,6 +1,11 @@
+/* This is the header file for our FBullCowGame class.
+This is the game logic for a simple word guess game.*/
 #pragma once
-#include <string>
 
+#include <string>
+#include <iostream>
+
+// to make unreal friendly
 using FString = std::string;
 using int32 = int;
 
@@ -9,10 +14,14 @@ struct FBullCowCount {
 	int32 cows = 0;
 };
 
-enum class EWordStatus {
+enum class EGuessStatus {
+	invalid,
 	ok,
-	not_isogram
+	not_isogram,
+	not_lowercase,
+	wrong_length
 };
+
 
 class FBullCowGame {
 public:
@@ -22,19 +31,22 @@ public:
 	int32 getMaxTries() const;
 	int32 getCurrentTry() const;
 	int32 getIsogramLen() const;
-	void isGameWon() const;
-	EWordStatus checkGuessValidity() const;
+	EGuessStatus checkGuessValidity(FString) const;
+	bool isGameWon() const;
 
-	void reset(); // TODO make a more rich return value.
-	FString getIsogram(); // TODO decide if this is useful to keep
-	void setNewIsogram(FString isogram); // TODO is this within scope of assignment?
+	void reset();
 
 	// counts bulls and cows and increase try number and assumes valid guess
-	FBullCowCount submitGuess(FString guess);
+	FBullCowCount submitValidGuess(FString);
+	void printGameSummary();
 
 private:
 	// see constructor for initialization
 	int32 myCurrentTry;
 	int32 myMaxTries;
 	FString myHiddenWord;
+	bool bIsGameWon;
+
+	bool isIsogram(const FString) const;
+	bool isLower(FString) const;
 };
